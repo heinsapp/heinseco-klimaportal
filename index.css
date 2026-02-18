@@ -3,6 +3,10 @@
    Smooth, cool animations & transitions
    ========================================== */
 
+/* --- Hide scrollbar for swipe containers --- */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
 /* --- Scroll-Triggered Reveal Animations --- */
 .reveal {
   opacity: 0;

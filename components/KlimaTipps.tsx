@@ -250,6 +250,40 @@ const ParallaxCard: React.FC<{
   );
 };
 
+/* ─── MOBILE SWIPE CARD ─── */
+const MobileSwipeCard: React.FC<{
+  tip: typeof tips[0];
+  index: number;
+  onOpen: (i: number) => void;
+}> = ({ tip, index, onOpen }) => (
+  <div
+    className="flex-shrink-0 w-[75vw] max-w-[280px] snap-center cursor-pointer"
+    onClick={() => onOpen(index)}
+  >
+    <div className="rounded-2xl bg-white border border-[#e5e5e0] overflow-hidden h-full shadow-lg">
+      <div className="h-[160px] bg-[#f0f0ed] relative overflow-hidden">
+        <img src={tip.image} alt={tip.title} className="w-full h-full object-cover" loading="lazy" />
+        <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+      </div>
+      <div className="p-5 flex flex-col justify-between" style={{ minHeight: '140px' }}>
+        <div>
+          <div className="flex items-center gap-2 mb-1.5">
+            <h3 className="text-base font-bold text-[#1a1a1a] leading-tight">{tip.title}</h3>
+            <span className="text-[#1a1a1a] opacity-40 shrink-0">{icons[tip.iconKey]}</span>
+          </div>
+          <p className="text-xs text-slate-400 leading-relaxed">{tip.frontText}</p>
+        </div>
+        <div className="flex items-center justify-between pt-3 mt-3 border-t border-[#f0f0ed]">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{tip.savings}</span>
+          <svg className="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const KlimaTipps: React.FC = () => {
   const ref = useScrollReveal();
   const [selectedTip, setSelectedTip] = useState<number | null>(null);
@@ -327,8 +361,8 @@ const KlimaTipps: React.FC = () => {
           </p>
         </div>
 
-        {/* Fan deck — no arrows */}
-        <div className="reveal stagger-2 flex items-center justify-center">
+        {/* Desktop: Fan deck */}
+        <div className="reveal stagger-2 hidden lg:flex items-center justify-center">
           <div className="relative flex items-center justify-center" style={{ height: '420px', width: '100%' }}>
             {tips.map((tip, i) => (
               <ParallaxCard
@@ -342,6 +376,18 @@ const KlimaTipps: React.FC = () => {
               />
             ))}
           </div>
+        </div>
+
+        {/* Mobile: Swipe carousel */}
+        <div className="reveal stagger-2 lg:hidden -mx-6">
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-6 pb-4 scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
+            {tips.map((tip, i) => (
+              <MobileSwipeCard key={i} tip={tip} index={i} onOpen={openModal} />
+            ))}
+            {/* Spacer for last card padding */}
+            <div className="flex-shrink-0 w-4"></div>
+          </div>
+          <p className="text-center text-white/20 text-xs font-medium mt-3 tracking-wider">← swipe →</p>
         </div>
       </div>
 
