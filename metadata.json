@@ -1,0 +1,7 @@
+{
+  "name": "Nationales Klimaportal",
+  "description": "Ein Hochleistungsportal für Klimaschutz und Nachhaltigkeit, inspiriert vom National Design Studio Ästhetik. Mit KI-gestützter Umweltberatung und Echtzeit-Klimadaten.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
