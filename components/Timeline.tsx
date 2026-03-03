@@ -6,38 +6,44 @@ const milestones = [
   {
     year: '2020',
     title: 'Klimanotstand erklärt',
-    description: 'Der Kreis Heinsberg erklärt den Klimanotstand und verpflichtet sich zu konkreten Maßnahmen.',
+    description: 'Heinsberg verpflichtet sich zu konkreten Maßnahmen.',
     status: 'done',
+    color: '#2d6a4f',
   },
   {
     year: '2021',
-    title: 'Solaroffensive gestartet',
-    description: 'Förderprogramm für 1.000 neue Photovoltaik-Anlagen auf privaten und öffentlichen Dächern.',
+    title: 'Solaroffensive',
+    description: '1.000 neue PV-Anlagen auf privaten & öffentlichen Dächern.',
     status: 'done',
+    color: '#40916c',
   },
   {
     year: '2022',
-    title: 'Radwegenetz erweitert',
-    description: '45km neue Radwege verbinden alle Ortsteile. Fahrradstellplätze an allen Bahnhöfen.',
+    title: 'Radwegenetz',
+    description: '45km neue Radwege verbinden alle Ortsteile.',
     status: 'done',
+    color: '#52b788',
   },
   {
     year: '2023',
-    title: 'Klimaneutrales Rathaus',
-    description: 'Vollständige Umstellung der kommunalen Gebäude auf erneuerbare Energien und Wärmepumpen.',
+    title: 'Grünes Rathaus',
+    description: 'Kommunale Gebäude 100% erneuerbar.',
     status: 'done',
+    color: '#74c69d',
   },
   {
     year: '2025',
     title: '50% Erneuerbare',
-    description: 'Halbierung der fossilen Energieabhängigkeit. Ausbau von Windkraft und Geothermie.',
+    description: 'Windkraft, Geothermie & Eigenversorgung.',
     status: 'active',
+    color: '#2d6a4f',
   },
   {
     year: '2030',
-    title: 'Klimaneutral 2030',
-    description: 'Vollständige Klimaneutralität des Kreises Heinsberg. Kompensation der Restemissionen.',
+    title: 'Klimaneutral',
+    description: 'Vollständige Klimaneutralität für Heinsberg.',
     status: 'future',
+    color: '#b7e4c7',
   },
 ];
 
@@ -47,94 +53,180 @@ const Timeline: React.FC = () => {
   return (
     <section
       ref={revealRef}
-      className="py-32 px-6 bg-white relative overflow-hidden"
+      className="py-32 px-6 bg-[#fcfcf9] relative overflow-hidden"
     >
-      {/* Falling leaves — denser than hero */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[
-          { left: '3%',  size: 20, color: '#a3b18a', duration: 12, delay: 0,    drift: '70px',  spin: '360deg', sway: 3.2 },
-          { left: '10%', size: 14, color: '#52b788', duration: 16, delay: 2,    drift: '-45px', spin: '-280deg', sway: 4.2 },
-          { left: '18%', size: 24, color: '#b7c9a0', duration: 14, delay: 5,    drift: '55px',  spin: '400deg', sway: 2.8 },
-          { left: '27%', size: 11, color: '#2d6a4f', duration: 20, delay: 1,    drift: '-60px', spin: '-320deg', sway: 5 },
-          { left: '35%', size: 18, color: '#d4dcc5', duration: 13, delay: 7,    drift: '40px',  spin: '300deg', sway: 3.5 },
-          { left: '43%', size: 15, color: '#a3b18a', duration: 18, delay: 3.5,  drift: '-50px', spin: '-370deg', sway: 4.5 },
-          { left: '52%', size: 22, color: '#52b788', duration: 11, delay: 9,    drift: '65px',  spin: '340deg', sway: 3 },
-          { left: '60%', size: 13, color: '#2d6a4f', duration: 17, delay: 0.5,  drift: '-35px', spin: '-290deg', sway: 4.8 },
-          { left: '70%', size: 19, color: '#b7c9a0', duration: 15, delay: 6,    drift: '75px',  spin: '420deg', sway: 2.6 },
-          { left: '78%', size: 16, color: '#d4dcc5', duration: 21, delay: 4,    drift: '-55px', spin: '-350deg', sway: 3.8 },
-          { left: '87%', size: 25, color: '#a3b18a', duration: 12, delay: 8,    drift: '50px',  spin: '310deg', sway: 4 },
-          { left: '95%', size: 12, color: '#52b788', duration: 19, delay: 11,   drift: '-70px', spin: '-400deg', sway: 5.2 },
-        ].map((leaf, i) => (
-          <div
-            key={i}
-            className="leaf"
-            style={{
-              left: leaf.left,
-              top: '-5%',
-              '--leaf-duration': `${leaf.duration}s`,
-              '--leaf-delay': `${leaf.delay}s`,
-              '--leaf-drift': leaf.drift,
-              '--leaf-spin': leaf.spin,
-              '--leaf-sway': `${leaf.sway}s`,
-            } as React.CSSProperties}
-          >
-            <svg width={leaf.size} height={leaf.size} viewBox="0 0 24 24" fill={leaf.color} opacity="0.5">
-              <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20c4 0 8.5-3.5 10.5-8 .5-1.17 1-2.5 1-4-.17-1.5-1.5-2-2.5 0z" />
-            </svg>
-          </div>
-        ))}
-      </div>
-
-      <div className="max-w-[1000px] mx-auto space-y-16 relative z-10">
+      {/* Gradient transition from dark section above */}
+      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#0a0a0a] to-transparent pointer-events-none" />
+      <div className="max-w-[800px] mx-auto relative z-10">
         {/* Header */}
-        <div className="text-center space-y-6">
-          <h2 className="reveal serif text-4xl md:text-7xl font-bold tracking-tight text-[#1a1a1a]">
+        <div className="text-center mb-20 reveal">
+          <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#52b788] mb-4 block">
+            Roadmap
+          </span>
+          <h2 className="serif text-4xl md:text-6xl font-bold tracking-tight text-[#1a1a1a]">
             Unser Weg zu <br /><span className="gradient-text">Klimaneutral 2030</span>
           </h2>
         </div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-[#e5e5e0] md:-translate-x-px"></div>
+        {/* Road + Milestones — Desktop */}
+        <div className="hidden md:block relative reveal stagger-1" style={{ height: 820 }}>
 
-          {milestones.map((m, i) => (
-            <div
-              key={i}
-              className={`reveal stagger-${(i % 3) + 1} relative flex items-start mb-12 last:mb-0 ${
-                i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-              }`}
-            >
-              {/* Dot on the line */}
-              <div className="absolute left-8 md:left-1/2 -translate-x-1/2 z-10">
-                <div className={`w-4 h-4 rounded-full border-4 border-white ${
-                  m.status === 'done' ? 'bg-[#2d6a4f]' :
-                  m.status === 'active' ? 'bg-[#52b788] shadow-[0_0_12px_rgba(82,183,136,0.5)]' :
-                  'bg-[#e5e5e0]'
-                }`}></div>
-              </div>
+          {/* SVG Road — centered winding */}
+          <svg
+            className="absolute left-1/2 top-0 h-full pointer-events-none"
+            style={{ transform: 'translateX(-50%)', width: 220 }}
+            viewBox="0 0 220 820"
+            fill="none"
+            preserveAspectRatio="none"
+          >
+            {/* Road shadow */}
+            <path
+              d="M 110 0 C 30 80, 30 120, 110 160 S 190 240, 110 320 S 30 400, 110 480 S 190 560, 110 640 S 50 720, 110 820"
+              stroke="#e8e8e4"
+              strokeWidth="52"
+              strokeLinecap="round"
+            />
+            {/* Road body */}
+            <path
+              d="M 110 0 C 30 80, 30 120, 110 160 S 190 240, 110 320 S 30 400, 110 480 S 190 560, 110 640 S 50 720, 110 820"
+              stroke="#1a1a1a"
+              strokeWidth="44"
+              strokeLinecap="round"
+            />
+            {/* Dashed center line */}
+            <path
+              d="M 110 0 C 30 80, 30 120, 110 160 S 190 240, 110 320 S 30 400, 110 480 S 190 560, 110 640 S 50 720, 110 820"
+              stroke="white"
+              strokeWidth="2"
+              strokeDasharray="8 10"
+              opacity="0.4"
+            />
+            {/* Green progress overlay */}
+            <path
+              d="M 110 0 C 30 80, 30 120, 110 160 S 190 240, 110 320 S 30 400, 110 480 S 190 560, 110 640"
+              stroke="#2d6a4f"
+              strokeWidth="44"
+              strokeLinecap="round"
+              opacity="0.25"
+            />
+          </svg>
 
-              {/* Content */}
-              <div className={`ml-20 md:ml-0 md:w-[calc(50%-40px)] ${
-                i % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8'
-              }`}>
-                <div className="info-card rounded-2xl p-6 space-y-2">
-                  <div className={`flex items-center gap-3 ${i % 2 === 0 ? 'md:justify-end' : ''}`}>
-                    <span className={`text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${
-                      m.status === 'done' ? 'bg-[#dcfce7] text-[#2d6a4f]' :
-                      m.status === 'active' ? 'bg-[#2d6a4f] text-white' :
-                      'bg-slate-100 text-slate-400'
-                    }`}>{m.year}</span>
-                    {m.status === 'active' && (
-                      <span className="text-[10px] font-bold uppercase text-[#52b788] tracking-wider">Aktuell</span>
-                    )}
-                  </div>
-                  <h3 className="text-lg font-bold text-[#1a1a1a]">{m.title}</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed">{m.description}</p>
+          {/* Milestone items — absolutely positioned left & right of center road */}
+          {milestones.map((m, i) => {
+            const isDone = m.status === 'done';
+            const isActive = m.status === 'active';
+            const isFuture = m.status === 'future';
+
+            // Y positions for each milestone (matching road curve peaks)
+            const yPositions = [30, 155, 310, 465, 625, 775];
+            const y = yPositions[i];
+
+            // Alternate: even index = left side, odd = right side
+            const isLeft = i % 2 === 0;
+
+            return (
+              <div
+                key={m.year}
+                className="absolute flex items-center gap-5"
+                style={{
+                  top: y,
+                  ...(isLeft
+                    ? { right: '54%' }
+                    : { left: '54%' }),
+                  flexDirection: isLeft ? 'row-reverse' : 'row',
+                }}
+              >
+                {/* Pin marker */}
+                <div
+                  className="shrink-0 w-9 h-9 rounded-full flex items-center justify-center border-[3px] border-white shadow-lg relative"
+                  style={{
+                    backgroundColor: isFuture ? '#e5e5e0' : m.color,
+                    zIndex: 10,
+                  }}
+                >
+                  {isDone && (
+                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                  {isActive && (
+                    <>
+                      <div className="w-2.5 h-2.5 rounded-full bg-white" />
+                      <div className="absolute inset-0 rounded-full animate-ping opacity-20" style={{ backgroundColor: m.color }} />
+                    </>
+                  )}
+                  {isFuture && (
+                    <div className="w-2 h-2 rounded-full bg-white/60" />
+                  )}
+                </div>
+
+                {/* Content card */}
+                <div
+                  className={`${isLeft ? 'text-right' : 'text-left'} max-w-[220px]`}
+                >
+                  <span
+                    className="serif text-2xl font-bold block leading-none"
+                    style={{ color: isFuture ? '#d0d0c8' : m.color }}
+                  >
+                    {m.year}
+                  </span>
+                  <h3 className={`text-[15px] font-bold mt-1 leading-tight ${isFuture ? 'text-[#c8c8c0]' : 'text-[#1a1a1a]'}`}>
+                    {m.title}
+                  </h3>
+                  <p className={`text-[12px] mt-0.5 leading-relaxed ${isFuture ? 'text-[#d4d4cc]' : 'text-[#1a1a1a]/40'}`}>
+                    {m.description}
+                  </p>
+                  {isActive && (
+                    <span className="inline-block mt-2 text-[8px] font-bold uppercase tracking-[0.15em] bg-[#2d6a4f] text-white px-2.5 py-1 rounded-full">
+                      Aktuell
+                    </span>
+                  )}
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+        </div>
+
+        {/* ─── Mobile — simple vertical ─── */}
+        <div className="md:hidden space-y-6 reveal stagger-1">
+          {milestones.map((m, i) => {
+            const isDone = m.status === 'done';
+            const isActive = m.status === 'active';
+            const isFuture = m.status === 'future';
+            return (
+              <div key={m.year} className="flex items-start gap-4">
+                <div className="flex flex-col items-center shrink-0">
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-white shadow-md"
+                    style={{ backgroundColor: isFuture ? '#e5e5e0' : m.color }}
+                  >
+                    {isDone && (
+                      <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                    {isActive && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
+                    {isFuture && <div className="w-2 h-2 rounded-full bg-[#b0b0a8]" />}
+                  </div>
+                  {i < milestones.length - 1 && (
+                    <div className={`w-0.5 h-8 ${isDone || isActive ? 'bg-[#2d6a4f]/30' : 'bg-[#e5e5e0]'}`} />
+                  )}
+                </div>
+                <div className="pt-0.5">
+                  <span className="serif text-xl font-bold block" style={{ color: isFuture ? '#c0c0b8' : m.color }}>
+                    {m.year}
+                  </span>
+                  <h3 className={`text-sm font-bold ${isFuture ? 'text-[#c0c0b8]' : 'text-[#1a1a1a]'}`}>{m.title}</h3>
+                  <p className={`text-xs mt-0.5 ${isFuture ? 'text-[#d4d4d0]' : 'text-[#1a1a1a]/40'}`}>{m.description}</p>
+                  {isActive && (
+                    <span className="inline-block mt-1.5 text-[8px] font-bold uppercase tracking-wider bg-[#2d6a4f] text-white px-2 py-0.5 rounded-full">
+                      Aktuell
+                    </span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

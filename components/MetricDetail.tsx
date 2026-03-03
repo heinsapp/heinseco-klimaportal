@@ -285,11 +285,6 @@ const MetricDetail: React.FC<MetricDetailProps> = ({ metricId, onBack }) => {
 
       {/* ━━━ HERO: Bloomberg-style two-panel ━━━ */}
       <section className="bg-[#0a0a0a] relative overflow-hidden">
-        {/* Grid texture */}
-        <div className="absolute inset-0 opacity-[0.025]" style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-          backgroundSize: '32px 32px'
-        }}></div>
 
         <div className="max-w-[1300px] mx-auto px-6 pt-12 pb-8 relative z-10">
           {/* Back */}
@@ -301,7 +296,7 @@ const MetricDetail: React.FC<MetricDetailProps> = ({ metricId, onBack }) => {
           </button>
 
           {/* Two-panel layout */}
-          <div className="reveal stagger-1 grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-[28px] overflow-hidden min-h-[480px]">
+          <div className="reveal stagger-1 grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden min-h-[480px]">
             {/* LEFT — Chart panel */}
             <div className="bg-[#141414] p-8 md:p-12 flex flex-col justify-between">
               <div>

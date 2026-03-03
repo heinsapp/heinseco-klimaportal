@@ -2,14 +2,14 @@
 import React from 'react';
 
 const facts = [
-  '🌡️ Die globale Durchschnittstemperatur ist um 1,1°C gestiegen',
-  '🌊 Der Meeresspiegel steigt um 3,6mm pro Jahr',
-  '🏭 Deutschland emittiert 746 Mio. Tonnen CO₂ jährlich',
-  '🌳 Wälder absorbieren ca. 30% des menschlichen CO₂',
-  '⚡ Erneuerbare decken 48,5% des deutschen Stroms',
-  '♻️ Nur 17% des weltweiten Plastikmülls werden recycelt',
-  '🔥 2023 war das heißeste Jahr seit Beginn der Aufzeichnungen',
-  '💧 Wasserknappheit betrifft 2 Milliarden Menschen weltweit',
+  'Die globale Durchschnittstemperatur ist um 1,1°C gestiegen',
+  'Der Meeresspiegel steigt um 3,6mm pro Jahr',
+  'Deutschland emittiert 746 Mio. Tonnen CO₂ jährlich',
+  'Wälder absorbieren ca. 30% des menschlichen CO₂',
+  'Erneuerbare decken 48,5% des deutschen Stroms',
+  'Nur 17% des weltweiten Plastikmülls werden recycelt',
+  '2023 war das heißeste Jahr seit Beginn der Aufzeichnungen',
+  'Wasserknappheit betrifft 2 Milliarden Menschen weltweit',
 ];
 
 const FactsTicker: React.FC = () => {

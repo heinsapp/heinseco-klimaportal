@@ -344,13 +344,10 @@ const KlimaTipps: React.FC = () => {
 
   return (
     <section ref={ref} className="py-32 px-6 bg-[#0a0a0a] relative overflow-hidden">
-      {/* Subtle grid */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-        backgroundSize: '40px 40px'
-      }}></div>
+      {/* Gradient transition from cream above */}
+      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#fcfcf9] to-transparent pointer-events-none z-10" />
 
-      <div className="max-w-[1400px] mx-auto space-y-8 relative">
+      <div className="max-w-[1200px] mx-auto space-y-8 relative">
         {/* Header */}
         <div className="text-center space-y-6">
           <h2 className="reveal serif text-4xl md:text-7xl font-bold tracking-tight text-white leading-[0.95]">
@@ -425,7 +422,7 @@ const KlimaTipps: React.FC = () => {
           {/* Centered modal wrapper */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-4 md:p-8">
             <div
-              className={`relative z-10 pointer-events-auto bg-[#fcfcf9] rounded-3xl w-full max-w-3xl max-h-[85vh] overflow-y-auto shadow-2xl transition-all duration-500 ${
+              className={`relative z-10 pointer-events-auto bg-[#fcfcf9] rounded-2xl w-full max-w-3xl max-h-[85vh] overflow-y-auto shadow-2xl transition-all duration-300 ${
                 modalVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
               }`}
               onClick={(e) => e.stopPropagation()}

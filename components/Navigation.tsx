@@ -1,7 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 
-const Navigation: React.FC<{ onNavigate?: (tab: string) => void }> = ({ onNavigate }) => {
+interface NavProps {
+  onNavigate?: (tab: string) => void;
+  activeTab?: string;
+}
+
+const Navigation: React.FC<NavProps> = ({ onNavigate, activeTab = 'home' }) => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -10,40 +15,56 @@ const Navigation: React.FC<{ onNavigate?: (tab: string) => void }> = ({ onNaviga
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navLink = (tab: string, label: string) => (
+    <button
+      onClick={() => onNavigate?.(tab)}
+      className={`text-[14px] font-medium transition-colors duration-200 ${
+        activeTab === tab
+          ? 'text-[#1a1a1a]'
+          : 'text-[#1a1a1a]/40 hover:text-[#1a1a1a]'
+      }`}
+    >
+      {label}
+    </button>
+  );
+
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-      scrolled
-        ? 'nav-scrolled py-2'
-        : 'bg-[#fcfcf9]/60 backdrop-blur-sm py-0'
-    }`}>
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <div className="flex justify-between items-center h-20">
-          <button onClick={() => onNavigate?.('home')} className="flex items-center group">
-            <div className="flex items-center space-x-0 border border-[#e5e5e0] rounded-lg overflow-hidden px-3 py-1 bg-white/50 group-hover:border-[#52b788] transition-colors duration-300">
-              <span className="serif text-xl font-medium pr-3 border-r border-[#e5e5e0] group-hover:border-[#52b788] transition-colors duration-300">Heins</span>
-              <span className="serif text-xl italic font-light pl-3 text-slate-500 group-hover:text-[#2d6a4f] transition-colors duration-300">Eco</span>
-            </div>
-          </button>
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={() => onNavigate?.('blog')}
-              className="hidden md:block px-5 py-2 rounded-full text-sm font-medium text-slate-600 hover:text-[#2d6a4f] hover:bg-[#dcfce7]/50 transition-all duration-300"
-            >
-              Blog
-            </button>
-            <button
-              onClick={() => onNavigate?.('home')}
-              className="hidden md:block px-6 py-2.5 rounded-full border border-[#1a1a1a] text-sm font-medium hover:bg-[#1a1a1a] hover:text-white transition-all duration-300"
-            >
-              Maßnahmen entdecken
-            </button>
-            <button className="p-2.5 rounded-full bg-[#1a1a1a] text-white hover:bg-[#2d6a4f] hover:scale-105 transition-all duration-300">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
+    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 pointer-events-none">
+      <div className={`inline-flex items-center gap-8 px-7 py-3.5 rounded-full pointer-events-auto transition-all duration-500 ${
+        scrolled
+          ? 'bg-white/90 backdrop-blur-xl shadow-lg shadow-black/[0.04] border border-[#e5e5e0]/60'
+          : 'bg-white/70 backdrop-blur-md border border-[#e5e5e0]/40'
+      }`}>
+
+        {/* Logo */}
+        <button onClick={() => onNavigate?.('home')} className="flex items-center gap-1.5">
+          <div className="w-7 h-7 rounded-lg bg-[#2d6a4f] flex items-center justify-center">
+            <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
           </div>
-        </div>
+          <span className="text-[15px] font-semibold text-[#1a1a1a] tracking-tight">HeinsEco</span>
+        </button>
+
+        {/* Divider */}
+        <div className="w-px h-5 bg-[#e5e5e0]" />
+
+        {/* Nav links */}
+        {navLink('blog', 'Aktuelles')}
+        {navLink('foerderung', 'Förderung')}
+        {navLink('map', 'Ladesäulen')}
+        <a
+          href="https://heinsapp.de"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[14px] font-medium text-[#1a1a1a]/40 hover:text-[#1a1a1a] transition-colors duration-200"
+        >
+          HeinsApp
+        </a>
+
+
       </div>
     </nav>
   );

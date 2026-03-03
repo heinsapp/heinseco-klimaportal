@@ -103,7 +103,7 @@ const AnimatedMetricCard: React.FC<{
     <div className={`reveal stagger-${delay + 1} flex flex-col space-y-6 group`}>
       <div
         onClick={onClick}
-        className="bg-white rounded-[50px] p-10 flex items-center justify-center min-h-[380px] shadow-sm relative overflow-hidden transition-all duration-500 hover:scale-[1.03] hover:shadow-xl card-glow cursor-pointer"
+        className="bg-white rounded-2xl p-10 flex items-center justify-center min-h-[380px] shadow-sm relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-lg card-glow cursor-pointer"
       >
         {/* Background visual */}
         <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-500 group-hover:opacity-70">
@@ -168,13 +168,15 @@ const Dashboard: React.FC<{ onMetricClick?: (metricId: string) => void }> = ({ o
 
       {/* Metrics Dashboard */}
       <section className="bg-[#0a0a0a] py-40 px-6 overflow-hidden relative">
+        {/* Gradient transition from cream above */}
+        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#fcfcf9] to-transparent pointer-events-none z-10" />
         {/* Subtle grid pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
           backgroundSize: '40px 40px'
         }}></div>
 
-        <div className="max-w-[1400px] mx-auto space-y-24 relative">
+        <div className="max-w-[1200px] mx-auto space-y-24 relative">
           <div className="text-center space-y-6">
             <h2 className="reveal text-white text-5xl md:text-8xl font-bold tracking-tighter max-w-5xl mx-auto leading-[0.9]">
               Wie entwickelt sich <br /> unsere Umweltbilanz?
