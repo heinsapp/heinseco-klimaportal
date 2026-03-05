@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useScrollReveal, useAnimatedCounter } from '../hooks/useScrollReveal';
+import { useMetricDetail as useMetricDetailData, useDashboardMetrics } from '../hooks/useKlimaData';
 
 interface MetricDetailProps {
   metricId: string;
@@ -275,7 +276,36 @@ const DonutChart: React.FC<{ data: { label: string; value: number }[] }> = ({ da
 /* ─── MAIN COMPONENT ─── */
 const MetricDetail: React.FC<MetricDetailProps> = ({ metricId, onBack }) => {
   const ref = useScrollReveal();
-  const m = metrics[metricId];
+
+  // Supabase data with fallback to hardcoded
+  const { data: detail } = useMetricDetailData(metricId);
+  const { data: allDbMetrics } = useDashboardMetrics();
+  const dbMetric = allDbMetrics.find(dm => dm.id === metricId);
+  const fallback = metrics[metricId];
+
+  const m = (detail && dbMetric) ? {
+    title: dbMetric.title,
+    category: dbMetric.category,
+    value: dbMetric.value,
+    unit: dbMetric.unit || undefined,
+    prefix: dbMetric.prefix || undefined,
+    netChange: dbMetric.net_change,
+    netLabel: dbMetric.net_label,
+    subtitle: dbMetric.subtitle,
+    chartData: dbMetric.chart_data || [],
+    chartYears: dbMetric.chart_years || [],
+    pieData: (dbMetric.pie_data || []).map((p: any) => ({ label: p.label, value: p.value })),
+    highlights: dbMetric.highlights || [],
+    article: {
+      headline: detail.headline,
+      lead: detail.lead,
+      paragraphs: detail.paragraphs || [],
+      pullQuote: detail.pull_quote || '',
+      pullQuoteAuthor: detail.pull_quote_author || '',
+    },
+    sources: dbMetric.sources || [],
+  } : fallback;
+
   const counterRef = useAnimatedCounter(m?.value ?? 0, 2000);
 
   if (!m) return null;

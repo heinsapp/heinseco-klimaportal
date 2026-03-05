@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useScrollReveal, useAnimatedCounter } from '../hooks/useScrollReveal';
+import { useDashboardMetrics } from '../hooks/useKlimaData';
 
 // Lyric-style progressive word highlight
 const LyricText: React.FC = () => {
@@ -141,6 +142,9 @@ const AnimatedMetricCard: React.FC<{
 
 const Dashboard: React.FC<{ onMetricClick?: (metricId: string) => void }> = ({ onMetricClick }) => {
   const sectionRef = useScrollReveal();
+  const { data: dbMetrics } = useDashboardMetrics();
+  const mv = (id: string, fallback: number) => dbMetrics.find(m => m.id === id)?.value ?? fallback;
+  const md = (id: string, fallback: string) => dbMetrics.find(m => m.id === id)?.subtitle ?? fallback;
 
   return (
     <div className="space-y-0" ref={sectionRef}>
@@ -190,8 +194,8 @@ const Dashboard: React.FC<{ onMetricClick?: (metricId: string) => void }> = ({ o
             {/* Solaranlagen */}
             <AnimatedMetricCard
               title="Solaranlagen"
-              value={1247}
-              description="Installierte PV-Anlagen im Kreis Heinsberg"
+              value={mv('solar', 1247)}
+              description={md('solar', 'Installierte PV-Anlagen im Kreis Heinsberg')}
               delay={0}
               onClick={() => onMetricClick?.('solar')}
             >
@@ -213,9 +217,9 @@ const Dashboard: React.FC<{ onMetricClick?: (metricId: string) => void }> = ({ o
             {/* Radwege */}
             <AnimatedMetricCard
               title="Radwege"
-              value={127}
+              value={mv('radwege', 127)}
               unit="km"
-              description="Ausgebautes Radwegenetz im Kreisgebiet"
+              description={md('radwege', 'Ausgebautes Radwegenetz im Kreisgebiet')}
               delay={1}
               onClick={() => onMetricClick?.('radwege')}
             >
@@ -230,9 +234,9 @@ const Dashboard: React.FC<{ onMetricClick?: (metricId: string) => void }> = ({ o
             {/* Einwohner */}
             <AnimatedMetricCard
               title="Einwohner aktiv"
-              value={38}
+              value={mv('einwohner', 38)}
               unit="%"
-              description="Bürger beteiligen sich an Klimaschutzprojekten"
+              description={md('einwohner', 'Bürger beteiligen sich an Klimaschutzprojekten')}
               delay={2}
               onClick={() => onMetricClick?.('einwohner')}
             >
@@ -248,10 +252,10 @@ const Dashboard: React.FC<{ onMetricClick?: (metricId: string) => void }> = ({ o
             {/* Emissionen gesenkt */}
             <AnimatedMetricCard
               title="Emissionen gesenkt"
-              value={18.6}
+              value={mv('emissionen', 18.6)}
               unit="kt"
               prefix="-"
-              description="Kilotonnen CO₂ weniger als Referenzjahr 2019"
+              description={md('emissionen', 'Kilotonnen CO₂ weniger als Referenzjahr 2019')}
               delay={3}
               onClick={() => onMetricClick?.('emissionen')}
             >

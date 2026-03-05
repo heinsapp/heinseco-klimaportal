@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useEvents } from '../hooks/useKlimaData';
 
 interface Event {
   id: string;
@@ -8,11 +9,13 @@ interface Event {
   description: string;
   date: string;
   endDate?: string;
+  end_date?: string | null;
   location: string;
-  category: 'stadtradeln' | 'gartenprämierung' | 'workshop' | 'allgemein';
+  category: string;
   image: string;
-  link?: string;
+  link?: string | null;
   heinsApp?: boolean;
+  heins_app?: boolean;
 }
 
 const events: Event[] = [
@@ -78,9 +81,14 @@ const categoryLabels: Record<string, { label: string; color: string }> = {
 
 const Events: React.FC<{ onNavigate?: (tab: string) => void }> = ({ onNavigate }) => {
   const ref = useScrollReveal();
+  const { data: dbEvents } = useEvents();
+  // Use Supabase data if available, fallback to hardcoded
+  const liveEvents: Event[] = dbEvents.length > 0
+    ? dbEvents.map(e => ({ ...e, endDate: e.end_date || undefined, heinsApp: e.heins_app } as Event))
+    : events;
   const [filter, setFilter] = useState<string>('alle');
 
-  const filteredEvents = filter === 'alle' ? events : events.filter(e => e.category === filter);
+  const filteredEvents = filter === 'alle' ? liveEvents : liveEvents.filter(e => e.category === filter);
 
   return (
     <div ref={ref}>
@@ -106,7 +114,7 @@ const Events: React.FC<{ onNavigate?: (tab: string) => void }> = ({ onNavigate }
         <div className="max-w-[1200px] mx-auto reveal">
           <div className="relative rounded-2xl overflow-hidden bg-[#0a0a0a] text-white">
             <div className="absolute inset-0 opacity-30">
-              <img src={events[0].image} alt="" className="w-full h-full object-cover" />
+              <img src={liveEvents[0]?.image} alt="" className="w-full h-full object-cover" />
             </div>
             <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent"></div>
             <div className="relative z-10 p-10 md:p-16 flex flex-col md:flex-row items-start md:items-center gap-8">
@@ -114,29 +122,29 @@ const Events: React.FC<{ onNavigate?: (tab: string) => void }> = ({ onNavigate }
                 <span className="inline-block px-3 py-1 rounded-full bg-[#2d6a4f] text-white text-[10px] font-bold uppercase tracking-[0.15em] mb-4">
                   Highlight
                 </span>
-                <h2 className="serif text-3xl md:text-4xl font-medium mb-3">{events[0].title}</h2>
-                <p className="text-slate-300 font-medium mb-2 max-w-lg">{events[0].description}</p>
+                <h2 className="serif text-3xl md:text-4xl font-medium mb-3">{liveEvents[0]?.title}</h2>
+                <p className="text-slate-300 font-medium mb-2 max-w-lg">{liveEvents[0]?.description}</p>
                 <div className="flex flex-wrap gap-4 text-sm text-slate-400 font-medium mt-4">
                   <span className="flex items-center gap-1.5">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                    {events[0].date} — {events[0].endDate}
+                    {liveEvents[0]?.date} — {liveEvents[0]?.endDate || liveEvents[0]?.end_date}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                    {events[0].location}
+                    {liveEvents[0]?.location}
                   </span>
                 </div>
               </div>
               <div className="flex flex-col gap-3">
                 <a
-                  href={events[0].link}
+                  href={liveEvents[0]?.link || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-white"
                 >
                   Jetzt anmelden
                 </a>
-                {events[0].heinsApp && (
+                {(liveEvents[0]?.heinsApp || liveEvents[0]?.heins_app) && (
                   <a
                     href="https://heinsapp.de"
                     target="_blank"

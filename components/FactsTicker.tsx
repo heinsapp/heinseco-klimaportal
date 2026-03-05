@@ -1,7 +1,9 @@
 
 import React from 'react';
+import { useFacts } from '../hooks/useKlimaData';
 
-const facts = [
+// Fallback data shown while loading
+const fallbackFacts = [
   'Die globale Durchschnittstemperatur ist um 1,1°C gestiegen',
   'Der Meeresspiegel steigt um 3,6mm pro Jahr',
   'Deutschland emittiert 746 Mio. Tonnen CO₂ jährlich',
@@ -13,6 +15,9 @@ const facts = [
 ];
 
 const FactsTicker: React.FC = () => {
+  const { data: factsData } = useFacts();
+  const facts = factsData.length > 0 ? factsData.map(f => f.content) : fallbackFacts;
+
   return (
     <div className="py-6 bg-[#1a1a1a] overflow-hidden relative">
       <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#1a1a1a] to-transparent z-10"></div>

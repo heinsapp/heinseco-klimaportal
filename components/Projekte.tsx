@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useProjects } from '../hooks/useKlimaData';
 
 interface Project {
   id: string;
@@ -9,8 +10,10 @@ interface Project {
   status: 'laufend' | 'abgeschlossen' | 'geplant';
   category: string;
   image: string;
-  startDate: string;
-  blogId?: string;
+  startDate?: string;
+  start_date?: string;
+  blogId?: string | null;
+  blog_id?: string | null;
 }
 
 const projects: Project[] = [
@@ -63,8 +66,12 @@ const statusConfig: Record<string, { label: string; color: string; bg: string }>
 const Projekte: React.FC<{ onNavigate?: (tab: string) => void }> = ({ onNavigate }) => {
   const ref = useScrollReveal();
   const [filter, setFilter] = useState<string>('alle');
+  const { data: dbProjects } = useProjects();
+  const liveProjects: Project[] = dbProjects.length > 0
+    ? dbProjects.map(p => ({ ...p, startDate: p.start_date, blogId: p.blog_id }))
+    : projects;
 
-  const filteredProjects = filter === 'alle' ? projects : projects.filter(p => p.status === filter);
+  const filteredProjects = filter === 'alle' ? liveProjects : liveProjects.filter(p => p.status === filter);
 
   return (
     <div ref={ref}>

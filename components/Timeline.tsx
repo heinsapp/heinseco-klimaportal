@@ -1,53 +1,20 @@
 
 import React from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useMilestones } from '../hooks/useKlimaData';
 
-const milestones = [
-  {
-    year: '2020',
-    title: 'Klimanotstand erklärt',
-    description: 'Heinsberg verpflichtet sich zu konkreten Maßnahmen.',
-    status: 'done',
-    color: '#2d6a4f',
-  },
-  {
-    year: '2021',
-    title: 'Solaroffensive',
-    description: '1.000 neue PV-Anlagen auf privaten & öffentlichen Dächern.',
-    status: 'done',
-    color: '#40916c',
-  },
-  {
-    year: '2022',
-    title: 'Radwegenetz',
-    description: '45km neue Radwege verbinden alle Ortsteile.',
-    status: 'done',
-    color: '#52b788',
-  },
-  {
-    year: '2023',
-    title: 'Grünes Rathaus',
-    description: 'Kommunale Gebäude 100% erneuerbar.',
-    status: 'done',
-    color: '#74c69d',
-  },
-  {
-    year: '2025',
-    title: '50% Erneuerbare',
-    description: 'Windkraft, Geothermie & Eigenversorgung.',
-    status: 'active',
-    color: '#2d6a4f',
-  },
-  {
-    year: '2030',
-    title: 'Klimaneutral',
-    description: 'Vollständige Klimaneutralität für Heinsberg.',
-    status: 'future',
-    color: '#b7e4c7',
-  },
+const fallbackMilestones = [
+  { year: '2020', title: 'Klimanotstand erklärt', description: 'Heinsberg verpflichtet sich zu konkreten Maßnahmen.', status: 'done', color: '#2d6a4f' },
+  { year: '2021', title: 'Solaroffensive', description: '1.000 neue PV-Anlagen auf privaten & öffentlichen Dächern.', status: 'done', color: '#40916c' },
+  { year: '2022', title: 'Radwegenetz', description: '45km neue Radwege verbinden alle Ortsteile.', status: 'done', color: '#52b788' },
+  { year: '2023', title: 'Grünes Rathaus', description: 'Kommunale Gebäude 100% erneuerbar.', status: 'done', color: '#74c69d' },
+  { year: '2025', title: '50% Erneuerbare', description: 'Windkraft, Geothermie & Eigenversorgung.', status: 'active', color: '#2d6a4f' },
+  { year: '2030', title: 'Klimaneutral', description: 'Vollständige Klimaneutralität für Heinsberg.', status: 'future', color: '#b7e4c7' },
 ];
 
 const Timeline: React.FC = () => {
+  const { data: milestonesData } = useMilestones();
+  const milestones = milestonesData.length > 0 ? milestonesData : fallbackMilestones;
   const revealRef = useScrollReveal();
 
   return (

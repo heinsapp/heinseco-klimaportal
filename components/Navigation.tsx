@@ -4,9 +4,10 @@ import React, { useState, useEffect } from 'react';
 interface NavProps {
   onNavigate?: (tab: string) => void;
   activeTab?: string;
+  isAdmin?: boolean;
 }
 
-const Navigation: React.FC<NavProps> = ({ onNavigate, activeTab = 'home' }) => {
+const Navigation: React.FC<NavProps> = ({ onNavigate, activeTab = 'home', isAdmin = false }) => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -64,6 +65,21 @@ const Navigation: React.FC<NavProps> = ({ onNavigate, activeTab = 'home' }) => {
           HeinsApp
         </a>
 
+        {isAdmin && (
+          <>
+            <div className="w-px h-5 bg-[#e5e5e0]" />
+            <button
+              onClick={() => onNavigate?.('admin')}
+              className={`text-[14px] font-medium transition-colors duration-200 ${
+                activeTab === 'admin'
+                  ? 'text-[#2d6a4f]'
+                  : 'text-[#2d6a4f]/50 hover:text-[#2d6a4f]'
+              }`}
+            >
+              Admin
+            </button>
+          </>
+        )}
 
       </div>
     </nav>

@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useFundingPrograms } from '../hooks/useKlimaData';
 
 interface FundingProgram {
   id: string;
@@ -11,7 +12,8 @@ interface FundingProgram {
   category: string;
   tag: string;
   color: string;
-  bgColor: string;
+  bgColor?: string;
+  bg_color?: string;
   image: string;
 }
 
@@ -77,6 +79,10 @@ const guidelines = [
 const Foerderung: React.FC<{ onNavigate?: (tab: string) => void }> = ({ onNavigate }) => {
   const ref = useScrollReveal();
   const [expandedProgram, setExpandedProgram] = useState<string | null>(null);
+  const { data: dbPrograms } = useFundingPrograms();
+  const livePrograms: FundingProgram[] = dbPrograms.length > 0
+    ? dbPrograms.map(p => ({ ...p, bgColor: p.bg_color }))
+    : programs;
 
   return (
     <div ref={ref}>
@@ -89,7 +95,7 @@ const Foerderung: React.FC<{ onNavigate?: (tab: string) => void }> = ({ onNaviga
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            {programs.map((program, i) => (
+            {livePrograms.map((program, i) => (
               <div
                 key={program.id}
                 className={`reveal stagger-${i + 1}`}

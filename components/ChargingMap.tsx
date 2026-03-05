@@ -1,6 +1,7 @@
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useChargingStations } from '../hooks/useKlimaData';
 
 // Leaflet is loaded globally via CDN script tag
 declare const L: any;
@@ -22,7 +23,7 @@ interface ChargingStation {
 type FilterType = 'all' | 'ac' | 'dc' | 'fast' | 'planned';
 
 // ─── Data ───────────────────────────────────────────────
-const stations: ChargingStation[] = [
+const fallbackStations: ChargingStation[] = [
   {
     id: '1',
     name: 'Rathaus Heinsberg',
@@ -357,6 +358,26 @@ const ChargingMap: React.FC = () => {
   const [selectedStation, setSelectedStation] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
 
+  // Supabase data with fallback
+  const { data: dbStations } = useChargingStations();
+  const stations: ChargingStation[] = useMemo(() => {
+    if (dbStations.length > 0) {
+      return dbStations.map((s): ChargingStation => ({
+        id: s.id,
+        name: s.name,
+        address: s.address,
+        coordinates: [s.lat, s.lng],
+        type: s.type,
+        power: s.power,
+        connectors: s.connectors,
+        operator: s.operator,
+        status: s.status,
+        amenities: s.amenities || [],
+      }));
+    }
+    return fallbackStations;
+  }, [dbStations]);
+
   const filteredStations = useMemo(() => {
     switch (filter) {
       case 'ac':
@@ -373,7 +394,7 @@ const ChargingMap: React.FC = () => {
       default:
         return stations;
     }
-  }, [filter]);
+  }, [filter, stations]);
 
   // ─── Initialize Leaflet map ─────────────────────────
   useEffect(() => {

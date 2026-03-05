@@ -12,13 +12,17 @@ import ChargingMap from './components/ChargingMap';
 import Foerderung from './components/Foerderung';
 import Events from './components/Events';
 import Projekte from './components/Projekte';
+import AdminPanel from './components/admin/AdminPanel';
+import AdminLogin from './components/admin/AdminLogin';
+import { useAuth } from './hooks/useAuth';
 
-type Tab = 'home' | 'blog' | 'metric' | 'map' | 'foerderung' | 'events' | 'projekte';
+type Tab = 'home' | 'blog' | 'metric' | 'map' | 'foerderung' | 'events' | 'projekte' | 'admin';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Tab>('home');
   const [activeMetric, setActiveMetric] = useState<string>('');
   const [blogResetKey, setBlogResetKey] = useState(0);
+  const { isAdmin, login, logout } = useAuth();
 
   const handleNavigate = (tab: string) => {
     if (activeTab === tab) {
@@ -29,7 +33,8 @@ const App: React.FC = () => {
       return;
     }
     setActiveTab(tab as Tab);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
+    setTimeout(() => window.scrollTo(0, 0), 0);
   };
 
   const handleMetricClick = (metricId: string) => {
@@ -50,9 +55,38 @@ const App: React.FC = () => {
     }, 100);
   };
 
+  // Admin Panel (full-screen, no nav/footer)
+  if (activeTab === 'admin') {
+    if (!isAdmin) {
+      return (
+        <div className="min-h-screen bg-[#fcfcf9]">
+          <AdminLogin onLogin={login} />
+          <div className="text-center pb-8">
+            <button
+              onClick={() => setActiveTab('home')}
+              className="text-xs text-[#1a1a1a]/40 hover:text-[#1a1a1a] transition-colors"
+            >
+              ← Zurück zur Website
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <AdminPanel
+        onLogout={async () => {
+          await logout();
+          setActiveTab('home');
+        }}
+        onBack={() => setActiveTab('home')}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#fcfcf9] flex flex-col pt-20">
-      <Navigation onNavigate={handleNavigate} activeTab={activeTab} />
+      <Navigation onNavigate={handleNavigate} activeTab={activeTab} isAdmin={isAdmin} />
 
       <main className="flex-1">
         {activeTab === 'home' && (
@@ -161,7 +195,15 @@ const App: React.FC = () => {
           {/* Bottom bar */}
           <div className="mt-16 pt-6 border-t border-white/[0.06] flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-[11px] text-white/20">&copy; 2025 Kreis Heinsberg · Klimaschutzmanagement</p>
-            <p className="text-[11px] text-white/20">Ein Projekt des Kreises Heinsberg</p>
+            <div className="flex items-center gap-4">
+              <p className="text-[11px] text-white/20">Ein Projekt des Kreises Heinsberg</p>
+              <button
+                onClick={() => handleNavigate('admin')}
+                className="text-[11px] text-white/10 hover:text-white/40 transition-colors"
+              >
+                Admin
+              </button>
+            </div>
           </div>
         </div>
       </footer>

@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useTips } from '../hooks/useKlimaData';
 
 // SVG icon components — clean, no emojis
 const icons: Record<string, React.ReactNode> = {
@@ -32,7 +33,18 @@ const icons: Record<string, React.ReactNode> = {
   ),
 };
 
-const tips = [
+interface Tip {
+  iconKey: string;
+  title: string;
+  frontText: string;
+  savings: string;
+  image: string;
+  stats: Array<{ label: string; value: string; sub: string }>;
+  details: string[];
+  fact: string;
+}
+
+const fallbackTips: Tip[] = [
   {
     iconKey: 'bike',
     title: 'Mobilität umdenken',
@@ -137,7 +149,7 @@ const tips = [
 
 // Parallax card with 3D tilt on hover
 const ParallaxCard: React.FC<{
-  tip: typeof tips[0];
+  tip: Tip;
   index: number;
   total: number;
   onOpen: (i: number) => void;
@@ -252,7 +264,7 @@ const ParallaxCard: React.FC<{
 
 /* ─── MOBILE SWIPE CARD ─── */
 const MobileSwipeCard: React.FC<{
-  tip: typeof tips[0];
+  tip: Tip;
   index: number;
   onOpen: (i: number) => void;
 }> = ({ tip, index, onOpen }) => (
@@ -289,6 +301,21 @@ const KlimaTipps: React.FC = () => {
   const [selectedTip, setSelectedTip] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+
+  // Supabase data with fallback
+  const { data: dbTips } = useTips();
+  const tips: Tip[] = dbTips.length > 0
+    ? dbTips.map(t => ({
+        iconKey: t.icon_key,
+        title: t.title,
+        frontText: t.front_text,
+        savings: t.savings,
+        image: t.image,
+        stats: t.stats,
+        details: t.details,
+        fact: t.fact,
+      }))
+    : fallbackTips;
 
   const openModal = (index: number) => {
     setSelectedTip(index);

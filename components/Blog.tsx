@@ -1,21 +1,26 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useBlogPosts, useEvents } from '../hooks/useKlimaData';
 
 interface BlogPost {
   id: string;
   date: string;
   author: string;
-  authorRole: string;
+  authorRole?: string;
+  author_role?: string;
   tag: string;
   title: string;
   excerpt: string;
-  readTime: string;
+  readTime?: string;
+  read_time?: string;
   color: string;
   image: string;
   paragraphs: string[];
-  pullQuote: string;
-  pullQuoteAuthor: string;
+  pullQuote?: string;
+  pull_quote?: string | null;
+  pullQuoteAuthor?: string;
+  pull_quote_author?: string | null;
 }
 
 interface EventItem {
@@ -24,11 +29,13 @@ interface EventItem {
   description: string;
   date: string;
   endDate?: string;
+  end_date?: string | null;
   location: string;
   category: string;
   image: string;
-  link?: string;
+  link?: string | null;
   heinsApp?: boolean;
+  heins_app?: boolean;
 }
 
 const events: EventItem[] = [
@@ -498,8 +505,18 @@ const EventsHero: React.FC = () => {
 const Blog: React.FC = () => {
   const ref = useScrollReveal();
   const [activePost, setActivePost] = useState<string | null>(null);
+  const { data: dbPosts } = useBlogPosts();
+  const { data: dbEvents } = useEvents();
 
-  const selectedPost = posts.find(p => p.id === activePost);
+  // Map Supabase snake_case to component camelCase, fallback to hardcoded
+  const livePosts: BlogPost[] = dbPosts.length > 0
+    ? dbPosts.map(p => ({ ...p, authorRole: p.author_role, readTime: p.read_time, pullQuote: p.pull_quote || '', pullQuoteAuthor: p.pull_quote_author || '' }))
+    : posts;
+  const liveEvents: EventItem[] = dbEvents.length > 0
+    ? dbEvents.map(e => ({ ...e, endDate: e.end_date || undefined, heinsApp: e.heins_app }))
+    : events;
+
+  const selectedPost = livePosts.find(p => p.id === activePost);
 
   const handlePostClick = (id: string) => {
     setActivePost(id);
@@ -529,7 +546,7 @@ const Blog: React.FC = () => {
             <h2 className="serif text-3xl md:text-4xl font-medium">Blog & Berichte</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {posts.map((post, i) => (
+            {livePosts.map((post, i) => (
               <BlogCard
                 key={post.id}
                 post={post}
